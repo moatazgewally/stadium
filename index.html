@@ -61,39 +61,45 @@
 
   <main class="max-w-5xl mx-auto px-4 mt-5">
 
-    <!-- شريط أرقام التواصل السريع للعملاء -->
+<!-- شريط أرقام التواصل السريع للعملاء -->
     <div id="publicContactBar" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-5">
       <div class="text-center text-xs font-bold text-slate-500 mb-3">للاستفسار أو الحجز السريع عبر الواتساب أو الاتصال المباشر:</div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         
-        <!-- الرقم الأول -->
+        <!-- ك / معتز -->
         <div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-2.5">
           <div class="flex items-center gap-2">
-            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">1</span>
-            <span class="font-extrabold text-sm text-slate-800" dir="ltr">0100 810 9557</span>
+            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-extrabold text-xs"><i class="fa-solid fa-user"></i></span>
+            <div>
+              <div class="font-extrabold text-sm text-indigo-900">ك / معتز</div>
+              <div class="text-xs font-bold text-slate-500" dir="ltr">0100 810 9557</div>
+            </div>
           </div>
           <div class="flex gap-1.5">
             <a href="https://wa.me/201008109557" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
               <i class="fa-brands fa-whatsapp text-sm"></i> واتساب
             </a>
             <a href="tel:01008109557" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
-              <i class="fa-solid fa-phone"></i> اتصال
+              <i class="fa-solid fa-phone"></i> ك / معتز
             </a>
           </div>
         </div>
 
-        <!-- الرقم الثاني -->
+        <!-- ك / محمد -->
         <div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-2.5">
           <div class="flex items-center gap-2">
-            <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">2</span>
-            <span class="font-extrabold text-sm text-slate-800" dir="ltr">0114 285 7955</span>
+            <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-extrabold text-xs"><i class="fa-solid fa-user"></i></span>
+            <div>
+              <div class="font-extrabold text-sm text-indigo-900">ك / محمد</div>
+              <div class="text-xs font-bold text-slate-500" dir="ltr">0114 285 7955</div>
+            </div>
           </div>
           <div class="flex gap-1.5">
             <a href="https://wa.me/201142857955" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
               <i class="fa-brands fa-whatsapp text-sm"></i> واتساب
             </a>
             <a href="tel:01142857955" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
-              <i class="fa-solid fa-phone"></i> اتصال
+              <i class="fa-solid fa-phone"></i> ك / محمد
             </a>
           </div>
         </div>
@@ -764,7 +770,7 @@
         const card = document.createElement('div');
         const slotTitle = s.displaySlot || s.slot;
         
-        if (isPublic) {
+if (isPublic) {
           if (s.isBooked) {
             card.className = "bg-rose-50/70 rounded-2xl p-4 border-r-4 border-rose-500 border border-rose-100 shadow-sm";
             card.innerHTML = `
@@ -787,7 +793,7 @@
             
             card.className = "bg-white rounded-2xl p-4 border-r-4 border-emerald-500 border border-slate-200 shadow-sm hover:shadow-md transition";
             card.innerHTML = `
-              <div class="flex justify-between items-center pb-2.5 mb-2.5 border-b border-slate-100">
+              <div class="flex justify-between items-center pb-2.5 mb-3 border-b border-slate-100">
                 <span class="font-extrabold text-indigo-800 text-sm flex items-center gap-1.5">
                   <i class="fa-regular fa-clock text-emerald-600"></i> ${slotTitle}
                 </span>
@@ -795,22 +801,19 @@
                   متاح
                 </span>
               </div>
-              <div class="text-xs text-slate-500 font-semibold mb-3 flex items-center gap-1.5">
-                <i class="fa-solid fa-tag text-amber-500"></i> السعر: 170 ج / ساعة
-              </div>
               <div class="space-y-1.5">
                 <a href="${waUrl1}" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl font-bold text-xs flex justify-center items-center gap-1.5 transition">
-                  <i class="fa-brands fa-whatsapp text-base"></i> حجز واتساب (01008109557)
+                  <i class="fa-brands fa-whatsapp text-base"></i> واتساب ك / معتز
                 </a>
                 <a href="${waUrl2}" target="_blank" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-3 rounded-xl font-bold text-xs flex justify-center items-center gap-1.5 transition">
-                  <i class="fa-brands fa-whatsapp text-base"></i> حجز واتساب (01142857955)
+                  <i class="fa-brands fa-whatsapp text-base"></i> واتساب ك / محمد
                 </a>
                 <div class="grid grid-cols-2 gap-1.5 pt-1">
-                  <a href="tel:01008109557" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-1.5 rounded-lg font-bold text-[11px] flex justify-center items-center gap-1 transition">
-                    <i class="fa-solid fa-phone text-indigo-600"></i> اتصال 1
+                  <a href="tel:01008109557" class="bg-slate-100 hover:bg-slate-200 text-slate-800 py-1.5 rounded-lg font-bold text-xs flex justify-center items-center gap-1 transition">
+                    <i class="fa-solid fa-phone text-indigo-600"></i> ك / معتز
                   </a>
-                  <a href="tel:01142857955" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-1.5 rounded-lg font-bold text-[11px] flex justify-center items-center gap-1 transition">
-                    <i class="fa-solid fa-phone text-indigo-600"></i> اتصال 2
+                  <a href="tel:01142857955" class="bg-slate-100 hover:bg-slate-200 text-slate-800 py-1.5 rounded-lg font-bold text-xs flex justify-center items-center gap-1 transition">
+                    <i class="fa-solid fa-phone text-indigo-600"></i> ك / محمد
                   </a>
                 </div>
               </div>
