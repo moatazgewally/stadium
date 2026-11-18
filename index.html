@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مواعيد وحجز الملعب الخماسي</title>
+  <title>الملعب الخماسي | جدول المواعيد والإدارة</title>
   
   <!-- Google Fonts: Cairo -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,24 +23,37 @@
     * { font-family: 'Cairo', sans-serif; }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen pb-10">
+<body class="bg-slate-100 text-slate-800 min-h-screen pb-12">
 
-  <!-- الهيدر -->
+  <!-- تنبيه عائم -->
+  <div id="customAlert" class="hidden fixed top-5 right-5 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl z-50 font-bold text-sm border-r-4 border-amber-400"></div>
+
+  <!-- الهيدر الأزرق المتدرج -->
   <header class="bg-gradient-to-l from-indigo-900 via-indigo-800 to-blue-900 text-white shadow-lg sticky top-0 z-30">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-3">
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-full bg-amber-400 text-indigo-950 flex items-center justify-center text-2xl shadow-md">
+        <div class="w-11 h-11 rounded-full bg-amber-400 text-indigo-950 flex items-center justify-center text-xl shadow-md">
           <i class="fa-solid fa-futbol"></i>
         </div>
         <div>
-          <h1 class="text-xl font-extrabold tracking-wide">الملعب الخماسي</h1>
-          <p class="text-xs text-emerald-300 font-semibold">جدول المواعيد المتاحة والحجز المباشر</p>
+          <h1 class="text-lg sm:text-xl font-extrabold tracking-wide">الملعب الخماسي</h1>
+          <p id="publicSubtitle" class="text-xs text-emerald-300 font-semibold">جدول المواعيد المتاحة والحجز المباشر</p>
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
-        <button onclick="openQrModal()" class="bg-white/15 hover:bg-white/25 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span id="activeUserBadge" class="hidden bg-amber-400 text-slate-900 px-3 py-1.5 rounded-full text-xs font-extrabold items-center gap-1.5"></span>
+        
+        <button onclick="openQrModal()" class="bg-white/15 hover:bg-white/25 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-qrcode text-amber-400"></i> مشاركة QR
+        </button>
+
+        <button id="btnShowLogin" onclick="openLoginModal()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition shadow-sm">
+          <i class="fa-solid fa-lock"></i> دخول الإدارة
+        </button>
+
+        <button id="btnLogout" onclick="logout()" class="hidden bg-rose-600 hover:bg-rose-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold items-center gap-1.5 transition shadow-sm">
+          <i class="fa-solid fa-right-from-bracket"></i> خروج
         </button>
       </div>
     </div>
@@ -48,8 +61,8 @@
 
   <main class="max-w-5xl mx-auto px-4 mt-5">
 
-    <!-- شريط أرقام التواصل السريع الثابت -->
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-5">
+    <!-- شريط أرقام التواصل السريع للعملاء -->
+    <div id="publicContactBar" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-5">
       <div class="text-center text-xs font-bold text-slate-500 mb-3">للاستفسار أو الحجز السريع عبر الواتساب أو الاتصال المباشر:</div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         
@@ -63,7 +76,7 @@
             <a href="https://wa.me/201008109557" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
               <i class="fa-brands fa-whatsapp text-sm"></i> واتساب
             </a>
-            <a href="tel:01008109557" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
+            <a href="tel:01008109557" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
               <i class="fa-solid fa-phone"></i> اتصال
             </a>
           </div>
@@ -79,7 +92,7 @@
             <a href="https://wa.me/201142857955" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
               <i class="fa-brands fa-whatsapp text-sm"></i> واتساب
             </a>
-            <a href="tel:01142857955" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
+            <a href="tel:01142857955" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition">
               <i class="fa-solid fa-phone"></i> اتصال
             </a>
           </div>
@@ -88,48 +101,623 @@
       </div>
     </div>
 
-    <!-- اختيار التاريخ -->
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-5 flex flex-wrap justify-center items-center gap-3">
-      <label class="text-indigo-700 font-bold text-sm flex items-center gap-1.5">
-        <i class="fa-solid fa-calendar-days"></i> اختر اليوم:
-      </label>
-      <input type="date" id="selectedDate" onchange="loadBookings()" class="px-4 py-2 rounded-xl border border-slate-300 bg-slate-50 font-bold text-sm outline-none focus:border-indigo-500">
-      <div id="dayDisplay" class="bg-amber-400 text-slate-900 px-4 py-2 rounded-xl font-extrabold text-sm shadow-sm"></div>
-      <button onclick="loadBookings()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-1.5 transition shadow-sm">
-        <i class="fa-solid fa-rotate"></i> تحديث
+    <!-- شريط تنقل الإدارة (يظهر بعد تسجيل الدخول) -->
+    <div id="adminTopNav" class="hidden grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
+      <button id="btnTab1" onclick="switchTab('bookings')" class="nav-btn bg-indigo-700 text-white py-3 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition">
+        <i class="fa-solid fa-calendar-days"></i> جدول الحجوزات
+      </button>
+      <button id="btnTab2" onclick="switchTab('expenses')" class="nav-btn bg-white text-slate-600 border border-slate-200 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition">
+        <i class="fa-solid fa-wallet"></i> المصاريف اليومية
+      </button>
+      <button id="btnTab3" onclick="switchTab('report')" class="nav-btn bg-white text-slate-600 border border-slate-200 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition">
+        <i class="fa-solid fa-chart-pie"></i> الجرد والتقارير
+      </button>
+      <button id="btnTab4" onclick="switchTab('logs')" class="nav-btn bg-white text-slate-600 border border-slate-200 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition">
+        <i class="fa-solid fa-clock-rotate-left"></i> سجل التعديلات
       </button>
     </div>
 
-    <!-- شبكة المواعيد -->
-    <div id="slotsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    <!-- 1. تبويب جدول الحجوزات -->
+    <div id="tabBookings">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-5 flex flex-wrap justify-center items-center gap-3">
+        <label class="text-indigo-700 font-bold text-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-calendar-days"></i> اختر اليوم:
+        </label>
+        <input type="date" id="selectedDate" onchange="loadBookings()" class="px-4 py-2 rounded-xl border border-slate-300 bg-slate-50 font-bold text-sm outline-none focus:border-indigo-500">
+        <div id="dayDisplay" class="bg-amber-400 text-slate-900 px-4 py-2 rounded-xl font-extrabold text-sm shadow-sm"></div>
+        <button onclick="loadBookings()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-1.5 transition shadow-sm">
+          <i class="fa-solid fa-rotate"></i> تحديث
+        </button>
+      </div>
+
+      <div id="slotsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+
+    <!-- 2. تبويب المصاريف اليومية -->
+    <div id="tabExpenses" class="hidden space-y-5">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+        <h3 class="text-indigo-800 font-extrabold text-base mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-plus-circle text-emerald-500"></i> إضافة مصروف جديد
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">التاريخ:</label>
+            <input type="date" id="expenseDate" onchange="loadExpenses()" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-bold">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">التصنيف:</label>
+            <select id="expCategory" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-bold">
+              <option value="مصروفات">مصروفات عامة</option>
+              <option value="محمد">محمد (مسحوبات شخصية)</option>
+              <option value="معتز">معتز (مسحوبات شخصية)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">البيان / السبب:</label>
+            <input type="text" id="expTitle" placeholder="مثال: كرات، صيانة، سحب شخصي..." class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">المبلغ (ج):</label>
+            <input type="number" id="expAmount" placeholder="0" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-bold">
+          </div>
+        </div>
+        <button onclick="submitExpense()" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-floppy-disk"></i> حفظ المصروف
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+        <h3 class="text-indigo-800 font-extrabold text-base mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-amber-500"></i> مصاريف اليوم (<span id="expTotal">0</span> ج)
+        </h3>
+        <div class="grid grid-cols-3 gap-2 mb-4 text-center text-xs font-bold">
+          <div class="bg-slate-900 text-white p-2.5 rounded-xl">محمد: <span id="expMohamed" class="text-sky-400">0</span> ج</div>
+          <div class="bg-slate-900 text-white p-2.5 rounded-xl">معتز: <span id="expMoataz" class="text-sky-400">0</span> ج</div>
+          <div class="bg-slate-900 text-white p-2.5 rounded-xl">مصروفات: <span id="expGeneral" class="text-sky-400">0</span> ج</div>
+        </div>
+        <div id="expensesList" class="space-y-2 text-sm"></div>
+      </div>
+    </div>
+
+    <!-- 3. تبويب الجرد والتقارير -->
+    <div id="tabReport" class="hidden">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <button id="btnSubDaily" onclick="switchReportType('daily')" class="sub-btn bg-amber-400 text-slate-900 py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-sun"></i> جرد يومي
+          </button>
+          <button id="btnSubMonthly" onclick="switchReportType('monthly')" class="sub-btn bg-slate-100 text-slate-600 py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-calendar"></i> جرد شهري ومقارنة
+          </button>
+          <button id="btnSubClient" onclick="switchReportType('client')" class="sub-btn bg-slate-100 text-slate-600 py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-user-tag"></i> تقرير باسم الحجز
+          </button>
+        </div>
+
+        <div id="dailyReportBox" class="mb-4">
+          <label class="block text-xs font-bold text-slate-600 mb-1">اختر اليوم:</label>
+          <input type="date" id="reportDate" onchange="loadReport()" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 font-bold text-sm">
+        </div>
+
+        <div id="monthlyReportBox" class="hidden mb-4">
+          <label class="block text-xs font-bold text-slate-600 mb-1">اختر الشهر والسنة:</label>
+          <input type="month" id="reportMonth" onchange="loadReport()" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 font-bold text-sm">
+        </div>
+
+        <div id="clientReportBox" class="hidden mb-4">
+          <label class="block text-xs font-bold text-slate-600 mb-1">أدخل اسم صاحب الحجز (العميل):</label>
+          <div class="flex gap-2">
+            <input type="text" id="searchClientName" placeholder="مثال: أحمد، الكابتن محمود..." onkeypress="if(event.key==='Enter') loadClientReport()" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm">
+            <button onclick="loadClientReport()" class="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-1">
+              <i class="fa-solid fa-magnifying-glass"></i> بحث
+            </button>
+          </div>
+        </div>
+
+        <div id="dailyOverrideContainer" class="bg-amber-50 border-2 border-dashed border-amber-400 rounded-xl p-4 mb-4">
+          <h4 class="text-amber-800 font-bold text-xs mb-2"><i class="fa-solid fa-pen-to-square"></i> إجمالي إيراد اليوم الرئيسي (المرجع للتقارير):</h4>
+          <div class="flex flex-wrap gap-2">
+            <input type="number" id="customDailyTotal" placeholder="المبلغ الفعلي المستهدف" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-slate-900 text-emerald-400 font-bold text-sm">
+            <button onclick="saveDailyOverride()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-1">
+              <i class="fa-solid fa-floppy-disk"></i> حفظ الإجمالي
+            </button>
+          </div>
+          <div class="mt-3 pt-2 border-t border-amber-200 flex items-center gap-2 text-amber-900 font-bold text-xs">
+            <input type="checkbox" id="isFirstDayOfMonth" class="w-4 h-4 accent-amber-500">
+            <label for="isFirstDayOfMonth" class="cursor-pointer"><i class="fa-solid fa-flag-checkered"></i> تعيين هذا اليوم كبداية للدورة المالية (أول يوم في الشهر)</label>
+          </div>
+        </div>
+
+        <button id="btnFetchGeneralReport" onclick="loadReport()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 mb-4">
+          <i class="fa-solid fa-calculator"></i> استخرج / حدّث التقرير
+        </button>
+
+        <div id="comparisonBox" class="hidden bg-slate-900 text-white p-3 rounded-xl border border-sky-400 mb-4 text-center">
+          <h4 class="text-sky-400 text-xs font-bold mb-1"><i class="fa-solid fa-chart-line"></i> التحليل والمقارنة مع الشهر السابق</h4>
+          <div id="comparisonText" class="text-sm font-bold"></div>
+        </div>
+
+        <div id="monthlyFixedExpensesRow" class="hidden grid-cols-3 gap-3 mb-4 text-center">
+          <div class="bg-orange-50 border border-orange-200 p-3 rounded-xl">
+            <div class="text-[11px] text-orange-700 font-bold">الإيجار الثابت</div>
+            <div class="text-base font-extrabold text-orange-600">6000 ج</div>
+          </div>
+          <div class="bg-orange-50 border border-orange-200 p-3 rounded-xl">
+            <div class="text-[11px] text-orange-700 font-bold">المرتبات الثابتة</div>
+            <div class="text-base font-extrabold text-orange-600">2000 ج</div>
+          </div>
+          <div class="bg-orange-50 border border-orange-200 p-3 rounded-xl">
+            <div class="text-[11px] text-orange-700 font-bold">إجمالي الخصم الثابت</div>
+            <div class="text-base font-extrabold text-orange-600">8000 ج</div>
+          </div>
+        </div>
+
+        <div id="generalReportView" class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
+          <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl">
+            <div class="text-xs text-slate-500">الساعات المحجوزة</div>
+            <div id="repHours" class="text-lg font-extrabold text-indigo-700">0 ساعة</div>
+          </div>
+          <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl">
+            <div class="text-xs text-slate-500">إجمالي المحصل الفعلي</div>
+            <div id="repRevenue" class="text-lg font-extrabold text-emerald-600">0 ج</div>
+          </div>
+          <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl">
+            <div class="text-xs text-slate-500">مصروفات تشغيل عامة</div>
+            <div id="repGeneralExpenses" class="text-lg font-extrabold text-rose-600">0 ج</div>
+          </div>
+          <div class="bg-slate-50 border border-slate-200 p-3.5 rounded-xl">
+            <div class="text-xs text-slate-500">صافي ربح الملعب</div>
+            <div id="repNet" class="text-lg font-extrabold text-sky-600">0 ج</div>
+            <span id="repNetNote" class="hidden text-[10px] text-slate-400">(بعد خصم 8000 ج ثابتة + المصاريف)</span>
+          </div>
+          <div class="bg-amber-50/60 border border-amber-300 p-3.5 rounded-xl">
+            <div class="text-xs text-slate-600 font-bold">صافي مستحق (محمد)</div>
+            <div id="repNetMohamed" class="text-lg font-extrabold text-amber-600">0 ج</div>
+            <span class="text-[10px] text-slate-500 block mt-1">نصف الصافي: <b id="p1ShareVal">0</b> | سحب: <b id="p1WithdrawVal">0</b></span>
+          </div>
+          <div class="bg-amber-50/60 border border-amber-300 p-3.5 rounded-xl">
+            <div class="text-xs text-slate-600 font-bold">صافي مستحق (معتز)</div>
+            <div id="repNetMoataz" class="text-lg font-extrabold text-amber-600">0 ج</div>
+            <span class="text-[10px] text-slate-500 block mt-1">نصف الصافي: <b id="p2ShareVal">0</b> | سحب: <b id="p2WithdrawVal">0</b></span>
+          </div>
+        </div>
+
+        <div id="monthlyBreakdownContainer" class="hidden mt-6">
+          <h3 class="text-indigo-800 font-bold text-sm mb-2"><i class="fa-solid fa-list-ol"></i> التفاصيل اليومية للشهر (يوم بيوم)</h3>
+          <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <table class="w-full text-xs text-center">
+              <thead class="bg-indigo-700 text-white">
+                <tr>
+                  <th class="p-2.5">التاريخ</th>
+                  <th class="p-2.5">الساعات</th>
+                  <th class="p-2.5">الإيراد</th>
+                  <th class="p-2.5">مصاريف</th>
+                  <th class="p-2.5">محمد</th>
+                  <th class="p-2.5">معتز</th>
+                  <th class="p-2.5">صافي اليوم</th>
+                </tr>
+              </thead>
+              <tbody id="monthlyBreakdownBody" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="clientReportView" class="hidden">
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center mb-4">
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl"><div class="text-xs text-slate-500">عدد الحجوزات</div><div id="cliBookingsCount" class="text-lg font-bold text-indigo-700">0</div></div>
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl"><div class="text-xs text-slate-500">إجمالي الساعات</div><div id="cliTotalHours" class="text-lg font-bold text-indigo-700">0</div></div>
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl"><div class="text-xs text-slate-500">الإجمالي المطلوب</div><div id="cliTotalPrice" class="text-lg font-bold text-amber-600">0 ج</div></div>
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl"><div class="text-xs text-slate-500">المدفوع</div><div id="cliTotalPaid" class="text-lg font-bold text-emerald-600">0 ج</div></div>
+            <div class="bg-rose-50 border border-rose-200 p-3 rounded-xl col-span-2"><div class="text-xs text-rose-700 font-bold">المتبقي على العميل</div><div id="cliTotalRemaining" class="text-lg font-extrabold text-rose-600">0 ج</div></div>
+          </div>
+          <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <table class="w-full text-xs text-right">
+              <thead class="bg-indigo-700 text-white">
+                <tr>
+                  <th class="p-2.5">التاريخ</th>
+                  <th class="p-2.5">الموعد</th>
+                  <th class="p-2.5">الاسم</th>
+                  <th class="p-2.5">الساعات</th>
+                  <th class="p-2.5">الإجمالي</th>
+                  <th class="p-2.5">المدفوع</th>
+                  <th class="p-2.5">المتبقي</th>
+                  <th class="p-2.5">ملاحظات</th>
+                </tr>
+              </thead>
+              <tbody id="clientTableBody" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. تبويب سجل التعديلات -->
+    <div id="tabLogs" class="hidden">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-indigo-800 font-extrabold text-base"><i class="fa-solid fa-history"></i> سجل التعديلات والأعمال</h3>
+          <button onclick="loadLogs()" class="bg-indigo-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1">
+            <i class="fa-solid fa-rotate"></i> تحديث
+          </button>
+        </div>
+        <div id="logsContainer" class="divide-y divide-slate-200 text-sm"></div>
+      </div>
+    </div>
 
   </main>
 
-  <!-- نافذة كود QR -->
+  <!-- Modal تسجيل الدخول للإدارة -->
+  <div id="loginModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex justify-center items-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 relative shadow-2xl">
+      <button onclick="closeModal('loginModal')" class="absolute left-4 top-4 text-slate-400 hover:text-slate-700 text-2xl">&times;</button>
+      <div class="w-14 h-14 rounded-full bg-indigo-900 text-amber-400 flex items-center justify-center text-2xl mx-auto mb-3 shadow">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+      <h2 class="text-center text-lg font-extrabold text-slate-800 mb-4">تسجيل دخول الإدارة</h2>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-indigo-700 mb-1">اسم المستخدم:</label>
+          <input type="text" id="adminUser" placeholder="أدخل اسم المستخدم" onkeypress="if(event.key==='Enter') login()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm font-bold outline-none focus:border-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-indigo-700 mb-1">كلمة السر:</label>
+          <input type="password" id="adminPass" placeholder="أدخل كلمة السر" onkeypress="if(event.key==='Enter') login()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-sm font-bold outline-none focus:border-indigo-500">
+        </div>
+        <div class="flex items-center gap-2 text-xs font-bold text-slate-600 pt-1">
+          <input type="checkbox" id="rememberMe" checked class="w-4 h-4 accent-indigo-600">
+          <label for="rememberMe" class="cursor-pointer">تذكرني على هذا الجهاز</label>
+        </div>
+        <button onclick="login()" class="w-full bg-indigo-700 hover:bg-indigo-800 text-white py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition mt-2">
+          <i class="fa-solid fa-right-to-bracket"></i> دخول
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal كود QR -->
   <div id="qrModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex justify-center items-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center relative shadow-2xl">
-      <button onclick="closeQrModal()" class="absolute left-4 top-4 text-slate-400 hover:text-slate-700 text-2xl">&times;</button>
+      <button onclick="closeModal('qrModal')" class="absolute left-4 top-4 text-slate-400 hover:text-slate-700 text-2xl">&times;</button>
       <h3 class="text-lg font-extrabold text-indigo-900 mb-1">كود QR جدول المواعيد</h3>
       <p class="text-xs text-slate-500 mb-4">امسح الكود بالكاميرا لفتح صفحة المواعيد مباشرة</p>
       <div id="qrcode" class="flex justify-center p-4 bg-slate-50 rounded-xl border border-slate-200 mb-4"></div>
-      <button onclick="copyPageUrl()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-bold text-sm flex justify-center items-center gap-2 transition">
-        <i class="fa-solid fa-copy"></i> نسخ رابط الصفحة
+      <div class="flex gap-2">
+        <button onclick="copyPublicUrl()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-bold text-xs flex justify-center items-center gap-1.5 transition">
+          <i class="fa-solid fa-copy"></i> نسخ الرابط
+        </button>
+        <button onclick="printQrCode()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold text-xs flex justify-center items-center gap-1.5 transition">
+          <i class="fa-solid fa-print"></i> طباعة
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal الحجز للإدارة -->
+  <div id="bookingModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex justify-center items-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal('bookingModal')" class="absolute left-4 top-4 text-slate-400 hover:text-slate-700 text-2xl">&times;</button>
+      <h3 class="text-base font-extrabold text-indigo-900 mb-3"><i class="fa-solid fa-plus-circle text-emerald-500"></i> حجز موعد: <span id="modalSlotTime" class="text-amber-600"></span></h3>
+      <form id="modalForm" class="space-y-3">
+        <input type="hidden" id="modalSlotText">
+        <input type="hidden" id="modalStartMins">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">اسم العميل:</label>
+          <input type="text" id="name" required placeholder="أدخل الاسم" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">مدة الحجز بالساعات (يمكن 0.5):</label>
+          <input type="number" id="hours" value="1" step="0.5" min="0.5" oninput="updateBookingDetails()" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-bold">
+        </div>
+        <div class="bg-amber-50 p-2.5 rounded-xl border border-amber-200 flex items-center gap-2 text-xs font-bold text-amber-800">
+          <input type="checkbox" id="isHalfShift" onchange="updateBookingDetails()" class="w-4 h-4 accent-amber-500">
+          <label for="isHalfShift" class="cursor-pointer">تأخير البداية نصف ساعة (مثال: 5:30 بدلاً من 5:00)</label>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">إجمالي المبلغ (ج):</label>
+            <input type="number" id="totalPriceInput" readonly class="w-full px-3 py-2 rounded-xl bg-slate-900 text-emerald-400 font-bold text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">العربون / المدفوع (ج):</label>
+            <input type="number" id="deposit" value="0" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm font-bold">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">رقم التليفون:</label>
+          <input type="text" id="phone" placeholder="01xxxxxxxxx" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">ملاحظات:</label>
+          <input type="text" id="notes" placeholder="ملاحظات إضافية..." class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 text-sm">
+        </div>
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2 text-xs font-bold">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="isWeekly" onchange="toggleWeeklyOptions()" class="w-4 h-4 accent-indigo-600">
+            <label for="isWeekly" class="cursor-pointer">حجز أسبوعي ثابت (3 أشهر - 12 أسبوع)</label>
+          </div>
+          <div id="extendOptionBox" class="hidden flex items-center gap-2 pr-5 text-indigo-700">
+            <input type="checkbox" id="extendFuture" class="w-4 h-4 accent-indigo-600">
+            <label for="extendFuture" class="cursor-pointer">تمديد لسنة كاملة (52 أسبوع)</label>
+          </div>
+        </div>
+        <button type="button" onclick="submitBooking()" class="w-full bg-indigo-700 hover:bg-indigo-800 text-white py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2">
+          <i class="fa-solid fa-check"></i> تأكيد الحجز
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal التحصيل وتعديل الحساب -->
+  <div id="payModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex justify-center items-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl space-y-3">
+      <button onclick="closeModal('payModal')" class="absolute left-4 top-4 text-slate-400 hover:text-slate-700 text-2xl">&times;</button>
+      <h3 class="text-base font-extrabold text-emerald-700"><i class="fa-solid fa-money-bill-wave"></i> تعديل الساعات / استلام حساب</h3>
+      <input type="hidden" id="paySlotText">
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1">اسم العميل:</label>
+        <input type="text" id="payPlayerName" readonly class="w-full px-3 py-2 rounded-xl bg-slate-100 font-bold text-sm">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1">الساعات المحجوزة:</label>
+        <input type="number" id="payTotalHoursInput" step="0.5" min="0.5" oninput="calculatePaySummary()" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold text-sm">
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">الإجمالي المطلوب:</label>
+          <input type="text" id="payCalculatedTotal" readonly class="w-full px-3 py-2 rounded-xl bg-slate-900 text-emerald-400 font-bold text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">المدفوع سابقاً:</label>
+          <input type="text" id="payCurrentDeposit" readonly class="w-full px-3 py-2 rounded-xl bg-slate-900 text-sky-400 font-bold text-sm">
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1">المبلغ المستلم الآن (ج):</label>
+        <input type="number" id="payAmountInput" placeholder="أدخل المبلغ المستلم" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold text-sm">
+      </div>
+      <button type="button" onclick="submitPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2">
+        <i class="fa-solid fa-floppy-disk"></i> حفظ الحساب والتحصيل
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal تعديل المصروف -->
+  <div id="editExpenseModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex justify-center items-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl space-y-3">
+      <button onclick="closeModal('editExpenseModal')" class="absolute left-4 top-4 text-slate-400 hover:text-slate-700 text-2xl">&times;</button>
+      <h3 class="text-base font-extrabold text-amber-600"><i class="fa-solid fa-pen-to-square"></i> تعديل / رد المصروف</h3>
+      <input type="hidden" id="editExpRowIndex">
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1">التصنيف:</label>
+        <select id="editExpCategory" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-bold">
+          <option value="مصروفات">مصروفات عامة</option>
+          <option value="محمد">محمد (مسحوبات شخصية)</option>
+          <option value="معتز">معتز (مسحوبات شخصية)</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1">البيان / السبب:</label>
+        <input type="text" id="editExpTitle" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1">المبلغ الجديد (ج):</label>
+        <input type="number" id="editExpAmount" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-bold">
+      </div>
+      <button type="button" onclick="submitExpenseEdit()" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2">
+        <i class="fa-solid fa-floppy-disk"></i> حفظ التعديل
       </button>
     </div>
   </div>
 
   <script>
-    // ⚠️ هام: ضع رابط الـ Web App الخاص بك من Google Apps Script هنا (الذي ينتهي بـ /exec)
+    // ⚠️ ضع هنا رابط الـ Web App المنتهي بـ /exec من حساب Gmail العادي
     const GAS_API_URL = "ضع_هنا_رابط_الويب_آب_الخاص_بك_الذي_ينتهي_بـ_exec";
 
     const PHONE_1 = "201008109557";
     const PHONE_2 = "201142857955";
 
+    let currentUser = "";
+    let currentReportType = "daily";
+    let qrGenerated = false;
+
+    async function callApi(payload) {
+      const response = await fetch(GAS_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      return await response.json();
+    }
+
     window.onload = function() {
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('selectedDate').value = today;
-      loadBookings();
+      document.getElementById('expenseDate').value = today;
+      document.getElementById('reportDate').value = today;
+      document.getElementById('reportMonth').value = today.substring(0, 7);
+
+      const savedUser = localStorage.getItem('stadium_app_user');
+      const savedPass = localStorage.getItem('stadium_app_pass');
+      if (savedUser && savedPass) {
+        document.getElementById('adminUser').value = savedUser;
+        document.getElementById('adminPass').value = savedPass;
+        login(true);
+      } else {
+        loadBookings();
+      }
     };
+
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    function openQrModal() {
+      document.getElementById('qrModal').classList.remove('hidden');
+      if (!qrGenerated) {
+        new QRCode(document.getElementById("qrcode"), {
+          text: window.location.href.split('?')[0],
+          width: 200,
+          height: 200
+        });
+        qrGenerated = true;
+      }
+    }
+
+    function copyPublicUrl() {
+      navigator.clipboard.writeText(window.location.href.split('?')[0]);
+      showAlert("تم نسخ رابط الصفحة بنجاح!");
+    }
+
+    function printQrCode() {
+      const qrImg = document.querySelector('#qrcode img') || document.querySelector('#qrcode canvas');
+      const src = qrImg.tagName === 'CANVAS' ? qrImg.toDataURL() : qrImg.src;
+      const win = window.open('', '_blank');
+      win.document.write(
+        '<html dir="rtl"><head><title>طباعة QR الملعب</title></head>' +
+        '<body style="text-align:center; font-family:Tahoma; padding:40px;">' +
+        '<h1>الملعب الخماسي</h1>' +
+        '<h3>امسح الكود لمعرفة المواعيد المتاحة والحجز</h3>' +
+        '<img src="' + src + '" style="width:280px; height:280px; margin:20px auto; border:2px solid #000; padding:10px;">' +
+        '<p>للحجز والاستفسار: 01008109557 - 01142857955</p>' +
+        '<scr' + 'ipt>window.onload = function() { window.print(); window.close(); };</scr' + 'ipt>' +
+        '</body></html>'
+      );
+      win.document.close();
+    }
+
+    function showAlert(msg) {
+      const alertBox = document.getElementById('customAlert');
+      alertBox.innerText = msg;
+      alertBox.classList.remove('hidden');
+      setTimeout(() => { alertBox.classList.add('hidden'); }, 3000);
+    }
+
+    async function login(isAuto = false) {
+      const user = document.getElementById('adminUser').value;
+      const pass = document.getElementById('adminPass').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+
+      if (!user || !pass) {
+        if (!isAuto) showAlert("يرجى إدخال اسم المستخدم وكلمة السر");
+        return;
+      }
+      
+      try {
+        const res = await callApi({ action: 'login', user: user, pass: pass });
+        if (res.success) {
+          currentUser = res.username;
+          const badge = document.getElementById('activeUserBadge');
+          badge.classList.remove('hidden');
+          badge.classList.add('flex');
+          badge.innerHTML = `<i class="fa-solid fa-user-check"></i> ${currentUser}`;
+          
+          document.getElementById('btnShowLogin').classList.add('hidden');
+          const btnOut = document.getElementById('btnLogout');
+          btnOut.classList.remove('hidden');
+          btnOut.classList.add('flex');
+
+          const nav = document.getElementById('adminTopNav');
+          nav.classList.remove('hidden');
+          nav.classList.add('grid');
+
+          document.getElementById('publicContactBar').classList.add('hidden');
+          document.getElementById('publicSubtitle').classList.add('hidden');
+          closeModal('loginModal');
+
+          if (rememberMe) {
+            localStorage.setItem('stadium_app_user', user);
+            localStorage.setItem('stadium_app_pass', pass);
+          } else {
+            localStorage.removeItem('stadium_app_user');
+            localStorage.removeItem('stadium_app_pass');
+          }
+          loadBookings();
+          showAlert("مرحباً بك يا " + currentUser);
+        } else {
+          if (!isAuto) showAlert(res.message);
+          else {
+            localStorage.removeItem('stadium_app_user');
+            localStorage.removeItem('stadium_app_pass');
+            loadBookings();
+          }
+        }
+      } catch (e) {
+        if (!isAuto) showAlert("تعذر الاتصال بالسيرفر، تأكد من رابط Web App");
+        loadBookings();
+      }
+    }
+
+    function logout() {
+      if (confirm("هل تريد تسجيل الخروج والعودة لوضع العملاء؟")) {
+        localStorage.removeItem('stadium_app_user');
+        localStorage.removeItem('stadium_app_pass');
+        currentUser = "";
+        document.getElementById('adminPass').value = "";
+        document.getElementById('activeUserBadge').classList.add('hidden');
+        document.getElementById('btnShowLogin').classList.remove('hidden');
+        document.getElementById('btnLogout').classList.add('hidden');
+        document.getElementById('adminTopNav').classList.add('hidden');
+        document.getElementById('publicContactBar').classList.remove('hidden');
+        document.getElementById('publicSubtitle').classList.remove('hidden');
+        switchTab('bookings');
+        loadBookings();
+        showAlert("تم تسجيل الخروج بنجاح");
+      }
+    }
+
+    function switchTab(tab) {
+      ['tabBookings', 'tabExpenses', 'tabReport', 'tabLogs'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      const map = { bookings: 'tabBookings', expenses: 'tabExpenses', report: 'tabReport', logs: 'tabLogs' };
+      document.getElementById(map[tab]).classList.remove('hidden');
+
+      const btns = { bookings: 'btnTab1', expenses: 'btnTab2', report: 'btnTab3', logs: 'btnTab4' };
+      Object.keys(btns).forEach(k => {
+        const el = document.getElementById(btns[k]);
+        if (k === tab) {
+          el.className = "nav-btn bg-indigo-700 text-white py-3 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition";
+        } else {
+          el.className = "nav-btn bg-white text-slate-600 border border-slate-200 py-3 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition";
+        }
+      });
+
+      if(tab === 'expenses') loadExpenses();
+      if(tab === 'report') loadReport();
+      if(tab === 'logs') loadLogs();
+    }
+
+    function switchReportType(type) {
+      currentReportType = type;
+      const btns = { daily: 'btnSubDaily', monthly: 'btnSubMonthly', client: 'btnSubClient' };
+      Object.keys(btns).forEach(k => {
+        const el = document.getElementById(btns[k]);
+        el.className = k === type
+          ? "sub-btn bg-amber-400 text-slate-900 py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5"
+          : "sub-btn bg-slate-100 text-slate-600 py-2.5 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5";
+      });
+
+      document.getElementById('dailyReportBox').classList.toggle('hidden', type !== 'daily');
+      document.getElementById('monthlyReportBox').classList.toggle('hidden', type !== 'monthly');
+      document.getElementById('clientReportBox').classList.toggle('hidden', type !== 'client');
+      document.getElementById('dailyOverrideContainer').classList.toggle('hidden', type !== 'daily');
+
+      const fixedRow = document.getElementById('monthlyFixedExpensesRow');
+      fixedRow.classList.toggle('hidden', type !== 'monthly');
+      if (type === 'monthly') fixedRow.classList.add('grid');
+
+      document.getElementById('monthlyBreakdownContainer').classList.toggle('hidden', type !== 'monthly');
+      document.getElementById('repNetNote').classList.toggle('hidden', type !== 'monthly');
+
+      const genView = document.getElementById('generalReportView');
+      genView.classList.toggle('hidden', type === 'client');
+      if (type !== 'client') genView.classList.add('grid');
+
+      document.getElementById('clientReportView').classList.toggle('hidden', type !== 'client');
+      document.getElementById('btnFetchGeneralReport').classList.toggle('hidden', type === 'client');
+
+      if(type !== 'client') loadReport();
+    }
 
     function getArabicDayName(dateString) {
       const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
@@ -141,7 +729,6 @@
     async function loadBookings() {
       const dateVal = document.getElementById('selectedDate').value;
       if (!dateVal) return;
-
       const dayName = getArabicDayName(dateVal);
       document.getElementById('dayDisplay').innerText = `${dayName} (${dateVal})`;
       
@@ -149,107 +736,412 @@
       container.innerHTML = `
         <div class="col-span-full text-center py-12 text-indigo-600 font-bold">
           <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
-          <div>جاري تحميل المواعيد المتاحة...</div>
+          <div>جاري تحميل جدول المواعيد...</div>
         </div>
       `;
-
+      
+      const isPublic = (currentUser === "");
       try {
-        const response = await fetch(`${GAS_API_URL}?action=getSlots&date=${encodeURIComponent(dateVal)}`);
-        const slots = await response.json();
-        renderSlots(slots, dateVal, dayName);
-      } catch (error) {
+        const slots = await callApi({ action: 'getBookings', date: dateVal, isPublic: isPublic });
+        renderSlots(slots);
+      } catch (e) {
         container.innerHTML = `
           <div class="col-span-full bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-center font-bold text-sm">
-            تعذر الاتصال بالجدول. تأكد من وضع رابط الـ Web App الصحيح في الكود وتعيين صلاحية الوصول إلى Anyone.
+            تعذر الاتصال بالجدول. تأكد من وضع رابط الـ Web App الصحيح وتعيين صلاحية الوصول إلى Anyone.
           </div>
         `;
       }
     }
 
-    function renderSlots(slots, dateVal, dayName) {
+    function renderSlots(slots) {
       const container = document.getElementById('slotsContainer');
       container.innerHTML = '';
+      const dateVal = document.getElementById('selectedDate').value;
+      const dayName = getArabicDayName(dateVal);
+      const isPublic = (currentUser === "");
 
       slots.forEach(s => {
-        const slotTitle = s.displaySlot || s.slot;
         const card = document.createElement('div');
+        const slotTitle = s.displaySlot || s.slot;
+        
+        if (isPublic) {
+          if (s.isBooked) {
+            card.className = "bg-rose-50/70 rounded-2xl p-4 border-r-4 border-rose-500 border border-rose-100 shadow-sm";
+            card.innerHTML = `
+              <div class="flex justify-between items-center pb-2.5 mb-2.5 border-b border-rose-100">
+                <span class="font-extrabold text-slate-700 text-sm flex items-center gap-1.5">
+                  <i class="fa-regular fa-clock text-rose-500"></i> ${slotTitle}
+                </span>
+                <span class="bg-rose-100 text-rose-700 text-xs px-2.5 py-1 rounded-full font-bold">
+                  <i class="fa-solid fa-lock"></i> محجوز
+                </span>
+              </div>
+              <div class="text-center text-xs text-slate-400 font-semibold py-4">
+                هذا الموعد محجوز بالفعل
+              </div>
+            `;
+          } else {
+            const waText = encodeURIComponent(`السلام عليكم، عاوز أحجز الملعب يوم ${dayName} (${dateVal}) في الموعد: ${slotTitle}`);
+            const waUrl1 = `https://wa.me/${PHONE_1}?text=${waText}`;
+            const waUrl2 = `https://wa.me/${PHONE_2}?text=${waText}`;
+            
+            card.className = "bg-white rounded-2xl p-4 border-r-4 border-emerald-500 border border-slate-200 shadow-sm hover:shadow-md transition";
+            card.innerHTML = `
+              <div class="flex justify-between items-center pb-2.5 mb-2.5 border-b border-slate-100">
+                <span class="font-extrabold text-indigo-800 text-sm flex items-center gap-1.5">
+                  <i class="fa-regular fa-clock text-emerald-600"></i> ${slotTitle}
+                </span>
+                <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-bold">
+                  متاح
+                </span>
+              </div>
+              <div class="text-xs text-slate-500 font-semibold mb-3 flex items-center gap-1.5">
+                <i class="fa-solid fa-tag text-amber-500"></i> السعر: 170 ج / ساعة
+              </div>
+              <div class="space-y-1.5">
+                <a href="${waUrl1}" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl font-bold text-xs flex justify-center items-center gap-1.5 transition">
+                  <i class="fa-brands fa-whatsapp text-base"></i> حجز واتساب (01008109557)
+                </a>
+                <a href="${waUrl2}" target="_blank" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-3 rounded-xl font-bold text-xs flex justify-center items-center gap-1.5 transition">
+                  <i class="fa-brands fa-whatsapp text-base"></i> حجز واتساب (01142857955)
+                </a>
+                <div class="grid grid-cols-2 gap-1.5 pt-1">
+                  <a href="tel:01008109557" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-1.5 rounded-lg font-bold text-[11px] flex justify-center items-center gap-1 transition">
+                    <i class="fa-solid fa-phone text-indigo-600"></i> اتصال 1
+                  </a>
+                  <a href="tel:01142857955" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-1.5 rounded-lg font-bold text-[11px] flex justify-center items-center gap-1 transition">
+                    <i class="fa-solid fa-phone text-indigo-600"></i> اتصال 2
+                  </a>
+                </div>
+              </div>
+            `;
+          }
+          container.appendChild(card);
+          return;
+        }
 
+        // وضع الإدارة
         if (s.isBooked) {
-          card.className = "bg-rose-50/70 rounded-2xl p-4 border-r-4 border-rose-500 border border-rose-100 shadow-sm";
+          let remaining = s.total - s.deposit;
+          let borderClass = 'border-emerald-500';
+          let badgeText = 'مدفوع كامل';
+          let badgeClass = 'bg-emerald-100 text-emerald-800';
+
+          if (remaining > 0 && s.deposit > 0) {
+            borderClass = 'border-amber-500';
+            badgeText = 'عربون';
+            badgeClass = 'bg-amber-100 text-amber-800';
+          } else if (s.deposit === 0) {
+            borderClass = 'border-rose-500';
+            badgeText = 'غير مدفوع';
+            badgeClass = 'bg-rose-100 text-rose-800';
+          }
+
+          card.className = `bg-white rounded-2xl p-4 border-r-4 ${borderClass} border border-slate-200 shadow-sm`;
+          const slotJson = JSON.stringify(s).replace(/"/g, '&quot;');
+
           card.innerHTML = `
-            <div class="flex justify-between items-center pb-2.5 mb-2.5 border-b border-rose-100">
-              <span class="font-extrabold text-slate-700 text-sm flex items-center gap-1.5">
-                <i class="fa-regular fa-clock text-rose-500"></i> ${slotTitle}
+            <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-100">
+              <span class="font-extrabold text-indigo-800 text-sm flex items-center gap-1.5">
+                <i class="fa-regular fa-clock"></i> ${slotTitle}
               </span>
-              <span class="bg-rose-100 text-rose-700 text-xs px-2.5 py-1 rounded-full font-bold">
-                <i class="fa-solid fa-lock"></i> محجوز
-              </span>
+              <span class="${badgeClass} text-xs px-2.5 py-0.5 rounded-full font-bold">${badgeText}</span>
             </div>
-            <div class="text-center text-xs text-slate-400 font-semibold py-3">
-              هذا الموعد محجوز بالفعل
+            <div class="text-xs space-y-1 text-slate-700">
+              <div><i class="fa-solid fa-user text-indigo-500 w-4"></i> <b>باسم:</b> ${s.name}</div>
+              <div><i class="fa-solid fa-hourglass-half text-indigo-500 w-4"></i> <b>المدة:</b> ${s.duration} ساعة</div>
+              <div><i class="fa-solid fa-file-invoice-dollar text-indigo-500 w-4"></i> <b>الإجمالي:</b> ${s.total} ج | <b>المدفوع:</b> <span class="text-emerald-600 font-bold">${s.deposit} ج</span></div>
+              <div><i class="fa-solid fa-scale-unbalanced text-rose-500 w-4"></i> <b>المتبقي:</b> <b class="${remaining <= 0 ? 'text-emerald-600' : 'text-rose-600'}">${remaining > 0 ? remaining : 0} ج</b></div>
+              ${s.phone ? `<div><i class="fa-solid fa-phone text-indigo-500 w-4"></i> ${s.phone}</div>` : ''}
+              ${s.notes ? `<div class="bg-amber-50 text-amber-800 border-r-2 border-amber-500 p-1.5 rounded text-[11px] font-semibold mt-1"><b>ملاحظة:</b> ${s.notes}</div>` : ''}
+              <div class="text-[10px] text-slate-400 pt-1">تسجيل: ${s.createdBy}</div>
+            </div>
+            <div class="grid grid-cols-4 gap-1 mt-3">
+              <button onclick='openPayModalFromObj(${slotJson})' class="bg-indigo-600 hover:bg-indigo-700 text-white py-1.5 rounded-lg font-bold text-[10px] flex justify-center items-center gap-1"><i class="fa-solid fa-pen"></i> تعديل</button>
+              <button onclick="apologizeSlot('${s.slot}')" class="bg-amber-500 hover:bg-amber-600 text-white py-1.5 rounded-lg font-bold text-[10px] flex justify-center items-center gap-1"><i class="fa-solid fa-user-xmark"></i> اعتذار</button>
+              <button onclick="cancelSlot('${s.slot}', false)" class="bg-rose-500 hover:bg-rose-600 text-white py-1.5 rounded-lg font-bold text-[10px] flex justify-center items-center gap-1"><i class="fa-solid fa-trash"></i> يوم</button>
+              <button onclick="cancelSlot('${s.slot}', true)" class="bg-rose-800 hover:bg-rose-900 text-white py-1.5 rounded-lg font-bold text-[10px] flex justify-center items-center gap-1"><i class="fa-solid fa-xmark"></i> الكل</button>
             </div>
           `;
         } else {
-          const waMsg = encodeURIComponent(`السلام عليكم، عاوز أحجز الملعب يوم ${dayName} (${dateVal}) في الموعد: ${slotTitle}`);
-          const waUrl1 = `https://wa.me/${PHONE_1}?text=${waMsg}`;
-          const waUrl2 = `https://wa.me/${PHONE_2}?text=${waMsg}`;
-
-          card.className = "bg-white rounded-2xl p-4 border-r-4 border-emerald-500 border border-slate-200 shadow-sm hover:shadow-md transition";
+          card.className = "bg-white rounded-2xl p-4 border-r-4 border-emerald-500 border border-slate-200 shadow-sm";
           card.innerHTML = `
-            <div class="flex justify-between items-center pb-2.5 mb-2.5 border-b border-slate-100">
+            <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-100">
               <span class="font-extrabold text-indigo-800 text-sm flex items-center gap-1.5">
                 <i class="fa-regular fa-clock text-emerald-600"></i> ${slotTitle}
               </span>
-              <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-bold">
-                متاح
-              </span>
+              <span class="bg-indigo-50 text-indigo-700 text-xs px-2.5 py-0.5 rounded-full font-bold">متاح</span>
             </div>
-            <div class="text-xs text-slate-500 font-semibold mb-3 flex items-center gap-1.5">
-              <i class="fa-solid fa-tag text-amber-500"></i> السعر: 170 ج / ساعة
-            </div>
-            
-            <div class="space-y-1.5">
-              <a href="${waUrl1}" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl font-bold text-xs flex justify-center items-center gap-1.5 transition">
-                <i class="fa-brands fa-whatsapp text-base"></i> حجز واتساب (01008109557)
-              </a>
-              <a href="${waUrl2}" target="_blank" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-3 rounded-xl font-bold text-xs flex justify-center items-center gap-1.5 transition">
-                <i class="fa-brands fa-whatsapp text-base"></i> حجز واتساب (01142857955)
-              </a>
-              <div class="grid grid-cols-2 gap-1.5 pt-1">
-                <a href="tel:01008109557" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-1.5 rounded-lg font-bold text-[11px] flex justify-center items-center gap-1 transition">
-                  <i class="fa-solid fa-phone text-indigo-600"></i> اتصال 1
-                </a>
-                <a href="tel:01142857955" class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-1.5 rounded-lg font-bold text-[11px] flex justify-center items-center gap-1 transition">
-                  <i class="fa-solid fa-phone text-indigo-600"></i> اتصال 2
-                </a>
-              </div>
-            </div>
+            <div class="text-xs text-slate-400 mb-3"><i class="fa-solid fa-tag"></i> السعر: 170 ج / ساعة</div>
+            <button onclick="openModal('${s.slot}', ${s.startMins})" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-900 py-2 rounded-xl font-extrabold text-xs flex justify-center items-center gap-1.5 transition">
+              <i class="fa-solid fa-plus"></i> احجز الآن
+            </button>
           `;
         }
         container.appendChild(card);
       });
     }
 
-    let qrGenerated = false;
-    function openQrModal() {
-      document.getElementById('qrModal').classList.remove('hidden');
-      if (!qrGenerated) {
-        new QRCode(document.getElementById("qrcode"), {
-          text: window.location.href,
-          width: 200,
-          height: 200
-        });
-        qrGenerated = true;
+    function openPayModalFromObj(slotObj) {
+      openPayModal(slotObj.slot, slotObj.name, slotObj.duration, slotObj.deposit);
+    }
+
+    function openModal(slotText, startMins) {
+      document.getElementById('modalSlotText').value = slotText;
+      document.getElementById('modalStartMins').value = startMins || '';
+      document.getElementById('modalSlotTime').innerText = slotText;
+      document.getElementById('bookingModal').classList.remove('hidden');
+      document.getElementById('hours').value = "1";
+      document.getElementById('deposit').value = "0";
+      document.getElementById('isHalfShift').checked = false;
+      toggleWeeklyOptions();
+      updateBookingDetails();
+    }
+
+    function updateBookingDetails() {
+      const hrs = parseFloat(document.getElementById('hours').value) || 0.5;
+      document.getElementById('totalPriceInput').value = hrs * 170;
+      const baseMins = parseInt(document.getElementById('modalStartMins').value, 10);
+      const isHalf = document.getElementById('isHalfShift').checked;
+      if (!isNaN(baseMins)) {
+        let actualStartMins = isHalf ? baseMins + 30 : baseMins;
+        let actualEndMins = actualStartMins + (hrs * 60);
+        function formatMinsTo12H(totalMins) {
+          let hours = Math.floor(totalMins / 60) % 24;
+          let mins = totalMins % 60;
+          let displayHour = hours % 12;
+          if (displayHour === 0) displayHour = 12;
+          return displayHour + ":" + (mins < 10 ? '0' + mins : mins);
+        }
+        document.getElementById('modalSlotTime').innerText = `من ${formatMinsTo12H(actualStartMins)} إلى ${formatMinsTo12H(actualEndMins)}`;
       }
     }
 
-    function closeQrModal() {
-      document.getElementById('qrModal').classList.add('hidden');
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+      if(modalId === 'bookingModal') document.getElementById('modalForm').reset();
     }
 
-    function copyPageUrl() {
-      navigator.clipboard.writeText(window.location.href);
-      alert("تم نسخ رابط الصفحة بنجاح!");
+    function openPayModal(slotText, playerName, currentDuration, currentDeposit) {
+      document.getElementById('paySlotText').value = slotText;
+      document.getElementById('payPlayerName').value = playerName;
+      document.getElementById('payTotalHoursInput').value = currentDuration;
+      document.getElementById('payCurrentDeposit').value = currentDeposit;
+      calculatePaySummary();
+      document.getElementById('payModal').classList.remove('hidden');
+    }
+
+    function calculatePaySummary() {
+      const hrs = parseFloat(document.getElementById('payTotalHoursInput').value) || 0;
+      const calculatedTotal = hrs * 170;
+      document.getElementById('payCalculatedTotal').value = calculatedTotal + ' ج';
+      const currentDeposit = parseFloat(document.getElementById('payCurrentDeposit').value) || 0;
+      const remainingToPay = calculatedTotal - currentDeposit;
+      document.getElementById('payAmountInput').value = remainingToPay > 0 ? remainingToPay : 0;
+    }
+
+    async function submitPayment() {
+      const slotText = document.getElementById('paySlotText').value;
+      const dateVal = document.getElementById('selectedDate').value;
+      const newTotalHours = document.getElementById('payTotalHoursInput').value;
+      const additionalPayment = document.getElementById('payAmountInput').value;
+      if (!newTotalHours || parseFloat(newTotalHours) <= 0) { showAlert("أدخل عدد ساعات صحيح"); return; }
+
+      const res = await callApi({ action: 'collectPayment', date: dateVal, slotText, newTotalHours, additionalPayment, currentUser });
+      showAlert(res);
+      closeModal('payModal');
+      loadBookings();
+    }
+
+    async function apologizeSlot(slotText) {
+      if (confirm("هل تريد تسجيل اعتذار العميل عن هذا اليوم فقط؟")) {
+        const dateVal = document.getElementById('selectedDate').value;
+        const res = await callApi({ action: 'cancelBooking', date: dateVal, slotText, currentUser, isApology: true, cancelAllWeeks: false });
+        showAlert(res);
+        loadBookings();
+      }
+    }
+
+    async function cancelSlot(slotText, cancelAllWeeks) {
+      const msg = cancelAllWeeks ? "تحذير: هل تريد إلغاء هذا الحجز لليوم ولكافة الأسابيع القادمة؟" : "هل أنت متأكد من إلغاء هذا الحجز لهذا اليوم فقط؟";
+      if (confirm(msg)) {
+        const dateVal = document.getElementById('selectedDate').value;
+        const res = await callApi({ action: 'cancelBooking', date: dateVal, slotText, currentUser, isApology: false, cancelAllWeeks });
+        showAlert(res);
+        loadBookings();
+      }
+    }
+
+    function toggleWeeklyOptions() {
+      const isWeekly = document.getElementById('isWeekly').checked;
+      document.getElementById('extendOptionBox').classList.toggle('hidden', !isWeekly);
+      if (!isWeekly) document.getElementById('extendFuture').checked = false;
+    }
+
+    async function submitBooking() {
+      const name = document.getElementById('name').value;
+      if (!name) { showAlert('برجاء كتابة اسم الحجز'); return; }
+      const hrs = parseFloat(document.getElementById('hours').value) || 0.5;
+      const data = {
+        date: document.getElementById('selectedDate').value,
+        slotText: document.getElementById('modalSlotText').value,
+        startMins: document.getElementById('modalStartMins').value,
+        isHalfShift: document.getElementById('isHalfShift').checked,
+        name: name, hours: hrs, total: hrs * 170,
+        deposit: parseFloat(document.getElementById('deposit').value) || 0,
+        phone: document.getElementById('phone').value,
+        notes: document.getElementById('notes').value,
+        isWeekly: document.getElementById('isWeekly').checked,
+        extendFuture: document.getElementById('extendFuture').checked,
+        currentUser: currentUser
+      };
+      const res = await callApi({ action: 'processBooking', data });
+      showAlert(res);
+      closeModal('bookingModal');
+      loadBookings();
+    }
+
+    async function submitExpense() {
+      const title = document.getElementById('expTitle').value;
+      const amount = document.getElementById('expAmount').value;
+      const expDate = document.getElementById('expenseDate').value;
+      const category = document.getElementById('expCategory').value;
+      if(!title || !amount) { showAlert('أدخل البيانات بشكل صحيح'); return; }
+      const res = await callApi({ action: 'addExpense', data: { date: expDate, category, title, amount, currentUser } });
+      showAlert(res);
+      document.getElementById('expTitle').value = '';
+      document.getElementById('expAmount').value = '';
+      loadExpenses();
+    }
+
+    async function loadExpenses() {
+      const expDate = document.getElementById('expenseDate').value;
+      const res = await callApi({ action: 'getDailyExpenses', date: expDate });
+      document.getElementById('expTotal').innerText = res.total;
+      document.getElementById('expMohamed').innerText = res.totalMohamed;
+      document.getElementById('expMoataz').innerText = res.totalMoataz;
+      document.getElementById('expGeneral').innerText = res.totalGeneral;
+      let html = '';
+      if(res.list.length === 0) html = '<div class="text-slate-400 text-center py-4">لا توجد مصاريف مسجلة لهذا اليوم</div>';
+      res.list.forEach(item => {
+        html += `
+          <div class="flex justify-between items-center bg-slate-50 border border-slate-200 p-3 rounded-xl">
+            <div>• [<b class="text-amber-600">${item.category}</b>] ${item.title} - <b class="text-indigo-700">${item.amount} ج</b> <span class="text-xs text-slate-400">(${item.user})</span></div>
+            <div class="flex gap-1.5">
+              <button onclick="openEditExpenseModal(${item.rowIndex}, '${item.category}', '${item.title}', ${item.amount})" class="bg-amber-500 text-white px-2.5 py-1 rounded-lg text-xs font-bold">تعديل</button>
+              <button onclick="deleteExpenseItem(${item.rowIndex})" class="bg-rose-500 text-white px-2.5 py-1 rounded-lg text-xs font-bold">حذف</button>
+            </div>
+          </div>`;
+      });
+      document.getElementById('expensesList').innerHTML = html;
+    }
+
+    function openEditExpenseModal(rowIndex, category, title, amount) {
+      document.getElementById('editExpRowIndex').value = rowIndex;
+      document.getElementById('editExpCategory').value = category;
+      document.getElementById('editExpTitle').value = title;
+      document.getElementById('editExpAmount').value = amount;
+      document.getElementById('editExpenseModal').classList.remove('hidden');
+    }
+
+    async function submitExpenseEdit() {
+      const rowIndex = document.getElementById('editExpRowIndex').value;
+      const category = document.getElementById('editExpCategory').value;
+      const title = document.getElementById('editExpTitle').value;
+      const amount = document.getElementById('editExpAmount').value;
+      if (amount === '' || !title) { showAlert('يرجى تعبئة الحقول بالشكل الصحيح'); return; }
+      const res = await callApi({ action: 'updateExpense', rowIndex, category, title, amount, currentUser });
+      showAlert(res);
+      closeModal('editExpenseModal');
+      loadExpenses();
+    }
+
+    async function deleteExpenseItem(rowIndex) {
+      if (confirm("هل أنت متأكد من حذف هذا المصروف نهائياً؟")) {
+        const res = await callApi({ action: 'deleteExpense', rowIndex, currentUser });
+        showAlert(res);
+        loadExpenses();
+      }
+    }
+
+    async function saveDailyOverride() {
+      const dateVal = document.getElementById('reportDate').value;
+      const overrideAmount = document.getElementById('customDailyTotal').value;
+      const isStartOfMonth = document.getElementById('isFirstDayOfMonth').checked;
+      if (!dateVal || overrideAmount === '') { showAlert('أدخل البيانات أولاً'); return; }
+      const res = await callApi({ action: 'setDailyOverride', date: dateVal, overrideAmount, isStartOfMonth, currentUser });
+      showAlert(res);
+      loadReport();
+    }
+
+    async function loadReport() {
+      let param = currentReportType === 'daily' ? document.getElementById('reportDate').value : document.getElementById('reportMonth').value;
+      if (!param) { showAlert('برجاء اختيار التاريخ أولاً'); return; }
+      const res = await callApi({ action: 'getAuditReport', type: currentReportType, param });
+      document.getElementById('repHours').innerText = res.hours + ' ساعة';
+      document.getElementById('repRevenue').innerText = res.revenue + ' ج';
+      document.getElementById('repGeneralExpenses').innerText = res.generalExpenses + ' ج';
+      document.getElementById('repNet').innerText = res.net + ' ج';
+      document.getElementById('repNetMohamed').innerText = res.netMohamed + ' ج';
+      document.getElementById('p1ShareVal').innerText = res.partnerShare || (res.net / 2);
+      document.getElementById('p1WithdrawVal').innerText = res.totalMohamed || 0;
+      document.getElementById('repNetMoataz').innerText = res.netMoataz + ' ج';
+      document.getElementById('p2ShareVal').innerText = res.partnerShare || (res.net / 2);
+      document.getElementById('p2WithdrawVal').innerText = res.totalMoataz || 0;
+
+      if (currentReportType === 'daily') {
+        document.getElementById('customDailyTotal').value = res.overrideRevenue !== null ? res.overrideRevenue : res.calculatedRevenue;
+        document.getElementById('isFirstDayOfMonth').checked = !!res.isStartOfMonth;
+      }
+      if (currentReportType === 'monthly' && res.dailyBreakdown) {
+        let bHtml = '';
+        res.dailyBreakdown.forEach(row => {
+          let rowClass = row.isStartOfMonth ? 'bg-amber-100 font-bold' : '';
+          let startTag = row.isStartOfMonth ? ' <span class="text-[10px] text-amber-800">(بداية شهر)</span>' : '';
+          let overrideTag = row.isOverride ? ' <span class="text-[10px] text-emerald-600">(مُعدّل)</span>' : '';
+          bHtml += `<tr class="${rowClass}"><td class="p-2">${row.date}${startTag}</td><td class="p-2">${row.hours}</td><td class="p-2 text-emerald-600 font-bold">${row.revenue} ج${overrideTag}</td><td class="p-2 text-rose-600">${row.expenses} ج</td><td class="p-2 text-amber-600">${row.mohamed} ج</td><td class="p-2 text-amber-600">${row.moataz} ج</td><td class="p-2 font-bold ${row.dailyNet >= 0 ? 'text-sky-600' : 'text-rose-600'}">${row.dailyNet} ج</td></tr>`;
+        });
+        document.getElementById('monthlyBreakdownBody').innerHTML = bHtml;
+      }
+      const compBox = document.getElementById('comparisonBox');
+      if (currentReportType === 'monthly' && res.comparison) {
+        compBox.classList.remove('hidden');
+        let c = res.comparison;
+        compBox.querySelector('#comparisonText').innerHTML = `إيراد الشهر السابق: <span class="text-sky-400">${c.prevMonthRevenue} ج</span> | الفارق: <span class="${c.isBetter ? 'text-emerald-400' : 'text-rose-400'}">${c.diffRevenue >= 0 ? '+' + c.diffRevenue : c.diffRevenue} ج (${c.growthPercent}%) ${c.isBetter ? '🚀' : '🔻'}</span>`;
+      } else {
+        compBox.classList.add('hidden');
+      }
+    }
+
+    async function loadClientReport() {
+      const clientName = document.getElementById('searchClientName').value;
+      if (!clientName) { showAlert('أدخل اسم صاحب الحجز أولاً'); return; }
+      const res = await callApi({ action: 'getClientReport', clientName });
+      document.getElementById('cliBookingsCount').innerText = res.totalBookings;
+      document.getElementById('cliTotalHours').innerText = res.totalHours + ' ساعة';
+      document.getElementById('cliTotalPrice').innerText = res.totalPrice + ' ج';
+      document.getElementById('cliTotalPaid').innerText = res.totalPaid + ' ج';
+      document.getElementById('cliTotalRemaining').innerText = res.totalRemaining + ' ج';
+      let html = '';
+      if (res.bookingsList.length === 0) html = '<tr><td colspan="8" class="p-4 text-center text-rose-600 font-bold">لم يتم العثور على أية حجوزات بهذا الاسم!</td></tr>';
+      else {
+        res.bookingsList.forEach(b => {
+          html += `<tr><td class="p-2">${b.date}</td><td class="p-2 text-indigo-700 font-bold">${b.slot}</td><td class="p-2">${b.name}</td><td class="p-2">${b.hours}</td><td class="p-2">${b.total} ج</td><td class="p-2 text-emerald-600">${b.paid} ج</td><td class="p-2 font-bold ${b.remaining > 0 ? 'text-rose-600' : 'text-emerald-600'}">${b.remaining} ج</td><td class="p-2">${b.notes || '-'}</td></tr>`;
+        });
+      }
+      document.getElementById('clientTableBody').innerHTML = html;
+    }
+
+    async function loadLogs() {
+      const container = document.getElementById('logsContainer');
+      container.innerHTML = '<div class="text-center py-4 text-slate-400">جاري تحميل السجل...</div>';
+      const logs = await callApi({ action: 'getLogs' });
+      let html = '';
+      if(logs.length === 0) html = '<div class="text-center py-4 text-slate-400">لا توجد إجراءات مسجلة حتى الآن</div>';
+      logs.forEach(l => {
+        html += `<div class="py-2.5 flex flex-wrap justify-between items-center gap-2"><div><b class="text-indigo-700">${l.user}</b>: <span class="text-amber-600 font-bold">${l.action}</span> - ${l.details}</div><div class="text-xs text-slate-400" dir="ltr">${l.time}</div></div>`;
+      });
+      container.innerHTML = html;
     }
   </script>
 </body>
